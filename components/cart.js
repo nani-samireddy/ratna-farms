@@ -3,6 +3,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { validQuantity } from "../lib/order-quantity";
+import { CustomerFields, OrderConfirmation, useOrderSubmission } from "./order-form";
 
 const CartContext = createContext(null);
 const storageKey = "ratna-farms-cart";
@@ -49,10 +51,6 @@ export function CartLink() {
   return <Link className="pill dark" href="/cart/">Cart{count > 0 && <span className="cart-count">{count}</span>}</Link>;
 }
 
-function validQuantity(quantity, option) {
-  return Number.isFinite(quantity) && quantity >= option.step && quantity <= 99 && Number.isInteger(quantity / option.step);
-}
-
 function optionPrice(option) {
   return option.price ? `₹${option.price} / ${option.unit}` : "Price on request";
 }
@@ -62,6 +60,7 @@ export function ProductOptions({ product }) {
   const [optionId, setOptionId] = useState(product.options[0].id);
   const [notice, setNotice] = useState("");
   const option = product.options.find(({ id }) => id === optionId);
+  const submission = useOrderSubmission();
 
   function add(event) {
     const field = event.currentTarget.form.elements.quantity;
@@ -74,19 +73,12 @@ export function ProductOptions({ product }) {
 
   function order(event) {
     event.preventDefault();
-    const fields = new FormData(event.currentTarget);
-    const quantity = Number(fields.get("quantity"));
-    const area = fields.get("area").trim();
-    if (!validQuantity(quantity, option) || !area) return;
-    whatsapp([
-      "Hello Ratna Farms! I’d like to check availability for an order.",
-      `Produce: ${product.name} (${option.name})`,
-      `Quantity: ${quantityLabel(quantity, option.unit)}`,
-      `Delivery area: ${area}`,
-      "Please confirm availability, final price and delivery options.",
-    ].join("\n"));
+    const quantity = event.currentTarget.elements.quantity.valueAsNumber;
+    if (!validQuantity(quantity, option)) return;
+    void submission.submit(event.currentTarget, [{ slug: product.slug, optionId, quantity }]);
   }
 
+  if (submission.orderId) return <OrderConfirmation orderId={submission.orderId} />;
   return <form className="purchase-form" onSubmit={order} onChange={() => setNotice("")}>
     <label htmlFor="purchase-option">Choose an option</label>
     <select id="purchase-option" value={optionId} onChange={(event) => setOptionId(event.target.value)}>
@@ -95,12 +87,12 @@ export function ProductOptions({ product }) {
     <p className="option-price">{optionPrice(option)}</p>
     <label htmlFor="purchase-quantity">Quantity ({option.unit})</label>
     <input key={option.id} id="purchase-quantity" type="number" name="quantity" min={option.step} max="99" step={option.step} defaultValue={1} required />
-    <label htmlFor="product-delivery-area">Delivery area for this order</label>
-    <input id="product-delivery-area" name="area" autoComplete="address-level2" maxLength={80} pattern=".*\S.*" placeholder="Town or village" required />
+    <CustomerFields prefix="product" />
     <div className="product-actions">
-      <button className="pill dark" type="submit">Order on WhatsApp ↗</button>
+      <button className="pill dark" type="submit" disabled={submission.pending}>{submission.pending ? "Placing order…" : "Place order"}</button>
       <button className="pill light" type="button" onClick={add}>Add to cart</button>
     </div>
+    {submission.error && <p role="alert">{submission.error}</p>}
     <p role="status">{notice}</p>
     {notice && <Link className="text-link" href="/cart/">View cart ↗</Link>}
   </form>;
@@ -118,14 +110,10 @@ function cartLines(products, items) {
   }));
 }
 
-function whatsapp(message) {
-  const destination = new URL("https://wa.me/919493981264");
-  destination.searchParams.set("text", message);
-  window.location.assign(destination.href);
-}
-
 export function CartContents({ products, checkout = false }) {
   const { items, change } = useContext(CartContext);
+  const submission = useOrderSubmission();
+  if (submission.orderId) return <OrderConfirmation orderId={submission.orderId} />;
   if (!items) return <p role="status">Loading your cart…</p>;
   const lines = cartLines(products, items);
   if (!lines.length) return <div className="empty-cart">
@@ -136,22 +124,14 @@ export function CartContents({ products, checkout = false }) {
   const subtotal = lines.reduce((total, { option, quantity }) => total + (option.price ?? 0) * quantity, 0);
   const pendingPrices = lines.some(({ option }) => !option.price);
 
-  function submit(event) {
+  async function submit(event) {
     event.preventDefault();
-    const fields = new FormData(event.currentTarget);
-    const name = fields.get("name").trim();
-    const area = fields.get("area").trim();
-    const notes = fields.get("notes").trim();
-    if (!name || !area) return;
-    whatsapp([
-      "Hello Ratna Farms! I’d like to check availability for this order:",
-      ...lines.map(({ product, option, quantity }) => `• ${product.name} (${option.name}) — ${quantityLabel(quantity, option.unit)}`),
-      "",
-      `Name: ${name}`,
-      `Delivery area: ${area}`,
-      ...(notes ? [`Notes: ${notes}`] : []),
-      "Please confirm availability, final prices and delivery options.",
-    ].join("\n"));
+    const orderItems = lines.map(({ product, option, quantity }) => ({
+      slug: product.slug, optionId: option.id, quantity,
+    }));
+    if (await submission.submit(event.currentTarget, orderItems)) {
+      for (const { key } of lines) change(key, 0);
+    }
   }
 
   return <div className="cart-layout">
@@ -181,13 +161,9 @@ export function CartContents({ products, checkout = false }) {
       {subtotal > 0 && <p>Priced items subtotal <strong>₹{subtotal}</strong></p>}
       <p>{pendingPrices ? "Some items are priced on request. We’ll confirm the final total and delivery." : "We’ll confirm availability and delivery charges."}</p>
       {checkout ? <form className="purchase-form" onSubmit={submit}>
-        <label htmlFor="customer-name">Your name</label>
-        <input id="customer-name" name="name" autoComplete="name" maxLength={80} pattern=".*\S.*" required />
-        <label htmlFor="delivery-area">Delivery area</label>
-        <input id="delivery-area" name="area" autoComplete="address-level2" maxLength={80} pattern=".*\S.*" required />
-        <label htmlFor="order-notes">Order notes (optional)</label>
-        <textarea id="order-notes" name="notes" maxLength={240} rows={3} />
-        <button className="pill dark" type="submit">Continue to WhatsApp ↗</button>
+        <CustomerFields prefix="checkout" />
+        <button className="pill dark" type="submit" disabled={submission.pending}>{submission.pending ? "Placing order…" : "Place order"}</button>
+        {submission.error && <p role="alert">{submission.error}</p>}
         <Link className="text-link" href="/cart/">Edit cart</Link>
       </form> : <Link className="pill dark section-cta" href="/checkout/">Go to checkout ↗</Link>}
     </div>

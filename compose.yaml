@@ -3,10 +3,14 @@ services:
   website:
     build: .
     ports:
-      - "${RATNA_BIND:-0.0.0.0}:${RATNA_PORT:-8092}:80"
+      - "${RATNA_BIND:-0.0.0.0}:${RATNA_PORT:-8092}:3000"
+    environment:
+      FMS_ORDER_URL: ${FMS_ORDER_URL:-}
+      FMS_API_KEY: ${FMS_API_KEY:-}
+      FMS_API_SECRET: ${FMS_API_SECRET:-}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/"]
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:3000/"]
       interval: 15s
       timeout: 3s
       retries: 3

@@ -1,20 +1,24 @@
 # Ratna Farms
 
-Next.js App Router storefront for country chicken and eggs in R. Chandrampalem. The shop supports search, product variants, direct WhatsApp ordering from each product page, and a browser-local cart for multi-product checkout.
+Next.js App Router storefront for country chicken and eggs in R. Chandrampalem. Customers can place an order on a product page or check out several items together.
 
 ## Development
 
-Use Node.js 24. Run `npm ci` and `npm run dev` and open [localhost:3000](http://localhost:3000). Run `npm run build` to export the storefront to `out/`.
+Use Node.js 24. Run `npm ci` and `npm run dev` and open [localhost:3000](http://localhost:3000). Run `npm run build` to build the standalone Next.js server.
 
-## Catalogue and FMS
+## Frappe FMS integration
 
-The storefront uses sample data from `lib/sample-products.json`. The server-side catalogue functions in `lib/catalogue.js` are the integration point for FMS on Frappe. Map FMS records into the current product shape, including a stable slug, photos and order options with stable IDs, units and optional prices. Cart storage contains option IDs and quantities, and the cart resolves current prices from the catalogue.
+The storefront uses sample catalogue data from `lib/sample-products.json`. The server-side catalogue functions in `lib/catalogue.js` are the integration point for an FMS catalogue.
 
-The current deployment renders the catalogue at build time. When connecting FMS, keep credentials in the build or server environment. Use a rebuild to refresh a static deployment, or switch to a Next.js server deployment if the catalogue needs runtime updates.
+Set `FMS_ORDER_URL` to the Frappe order intake method URL and set `FMS_API_KEY` and `FMS_API_SECRET` in the server environment. Use an integration user with access to the intake method. Configure these values in the deployment's untracked `.env` for Docker Compose.
+
+The storefront calls the method with JSON containing `request_id`, `customer_name`, `customer_phone`, `delivery_area`, `notes`, and `items`. Each item has `product_slug`, `option_id`, and `quantity`. The Frappe response must include `{"message":{"order_id":"<saved order reference>"}}`. The storefront only displays a confirmation after receiving that reference.
+
+The FMS method must validate availability and pricing, store the order with a unique `request_id`, and return the existing reference when a request is retried. After committing a new order, FMS should queue WhatsApp and email notifications to the configured administrators. Handle notification retries independently of order acceptance and rate limit public intake before enabling the checkout.
 
 ## Home server
 
-Run `docker compose up -d --build --wait` from the repository root. Docker builds the Next.js export and serves it with Nginx. Set `RATNA_BIND` to the server's LAN address to limit the listener to that interface. The default port is 8092 and can be changed with `RATNA_PORT`.
+After configuring and verifying FMS order intake, run `docker compose up -d --build --wait` from the repository root. Docker builds and serves the standalone Next.js app. Set `RATNA_BIND` to the server's LAN address to limit the listener to that interface. The default port is 8092 and can be changed with `RATNA_PORT`.
 
 ## Images
 
