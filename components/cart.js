@@ -64,14 +64,30 @@ export function ProductOptions({ product }) {
   const option = product.options.find(({ id }) => id === optionId);
 
   function add(event) {
-    event.preventDefault();
-    const quantity = Number(new FormData(event.currentTarget).get("quantity"));
+    const field = event.currentTarget.form.elements.quantity;
+    if (!field.reportValidity()) return;
+    const quantity = field.valueAsNumber;
     if (!validQuantity(quantity, option)) return;
     change(`${product.slug}:${option.id}`, quantity, true);
     setNotice(`${product.name} added to your cart.`);
   }
 
-  return <form className="purchase-form" onSubmit={add} onChange={() => setNotice("")}>
+  function order(event) {
+    event.preventDefault();
+    const fields = new FormData(event.currentTarget);
+    const quantity = Number(fields.get("quantity"));
+    const area = fields.get("area").trim();
+    if (!validQuantity(quantity, option) || !area) return;
+    whatsapp([
+      "Hello Ratna Farms! I’d like to check availability for an order.",
+      `Produce: ${product.name} (${option.name})`,
+      `Quantity: ${quantityLabel(quantity, option.unit)}`,
+      `Delivery area: ${area}`,
+      "Please confirm availability, final price and delivery options.",
+    ].join("\n"));
+  }
+
+  return <form className="purchase-form" onSubmit={order} onChange={() => setNotice("")}>
     <label htmlFor="purchase-option">Choose an option</label>
     <select id="purchase-option" value={optionId} onChange={(event) => setOptionId(event.target.value)}>
       {product.options.map(({ id, name }) => <option key={id} value={id}>{name}</option>)}
@@ -79,7 +95,12 @@ export function ProductOptions({ product }) {
     <p className="option-price">{optionPrice(option)}</p>
     <label htmlFor="purchase-quantity">Quantity ({option.unit})</label>
     <input key={option.id} id="purchase-quantity" type="number" name="quantity" min={option.step} max="99" step={option.step} defaultValue={1} required />
-    <button className="pill dark" type="submit">Add to cart</button>
+    <label htmlFor="product-delivery-area">Delivery area for this order</label>
+    <input id="product-delivery-area" name="area" autoComplete="address-level2" maxLength={80} pattern=".*\S.*" placeholder="Town or village" required />
+    <div className="product-actions">
+      <button className="pill dark" type="submit">Order on WhatsApp ↗</button>
+      <button className="pill light" type="button" onClick={add}>Add to cart</button>
+    </div>
     <p role="status">{notice}</p>
     {notice && <Link className="text-link" href="/cart/">View cart ↗</Link>}
   </form>;
@@ -171,31 +192,4 @@ export function CartContents({ products, checkout = false }) {
       </form> : <Link className="pill dark section-cta" href="/checkout/">Go to checkout ↗</Link>}
     </div>
   </div>;
-}
-
-export function QuickOrder({ products }) {
-  const [selected, setSelected] = useState(products[0]?.name ?? "");
-  useEffect(() => {
-    const requested = new URLSearchParams(window.location.search).get("product");
-    if (products.some(({ name }) => name === requested)) setSelected(requested);
-  }, [products]);
-  if (!products.length) return null;
-
-  function submit(event) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    whatsapp(`Hello Ratna Farms! I’d like to order ${data.get("quantity").trim()} of ${selected} for delivery to ${data.get("area").trim()}. Please confirm availability, pricing and delivery.`);
-  }
-
-  return <form onSubmit={submit}>
-    <label htmlFor="quick-product">Produce</label>
-    <select id="quick-product" value={selected} onChange={(event) => setSelected(event.target.value)}>
-      {products.map(({ name }) => <option key={name}>{name}</option>)}
-    </select>
-    <label htmlFor="quick-quantity">Quantity or pack size</label>
-    <input id="quick-quantity" name="quantity" maxLength={60} pattern=".*\S.*" placeholder="e.g. 1 kg or 12 eggs" required />
-    <label htmlFor="quick-area">Delivery area</label>
-    <input id="quick-area" name="area" maxLength={80} pattern=".*\S.*" placeholder="Town or village" required />
-    <button className="pill dark" type="submit">Continue to WhatsApp ↗</button>
-  </form>;
 }

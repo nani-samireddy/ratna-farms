@@ -195,3 +195,5 @@ textarea { width: 100%; font: inherit; border: 1px solid #19181722; border-radiu
   .cart-layout { grid-template-columns: 1fr; }
   .shop-card h3 { font-size: clamp(1.25rem, 5vw, 1.6rem); }
 }
+
+.product-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }

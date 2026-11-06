@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ProductGrid } from "../components/catalogue";
-import { QuickOrder } from "../components/cart";
 import { getProducts } from "../lib/catalogue";
 
 export default async function HomePage() {
@@ -37,8 +36,8 @@ export default async function HomePage() {
     </section>
     <section className="order" id="order">
       <div className="section-inner order-layout">
-        <div><p className="tag">Order from the farm</p><h2>Ordering one item?</h2><p>Send a quick enquiry and we’ll confirm availability, final price, and delivery.</p></div>
-        <QuickOrder products={products} />
+        <div><p className="tag">Order from the farm</p><h2>Ready to order?</h2><p>Open a product to order directly, or use your cart to order several items together.</p></div>
+        <div className="product-actions"><Link className="pill dark" href="/shop/">Shop our produce ↗</Link><Link className="pill light" href="/cart/">View your cart</Link></div>
       </div>
     </section>
   </>;

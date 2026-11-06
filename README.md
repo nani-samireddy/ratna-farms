@@ -1,6 +1,6 @@
 # Ratna Farms
 
-Next.js App Router storefront for country chicken and eggs in R. Chandrampalem. The shop supports search, product variants, a browser-local cart and WhatsApp checkout.
+Next.js App Router storefront for country chicken and eggs in R. Chandrampalem. The shop supports search, product variants, direct WhatsApp ordering from each product page, and a browser-local cart for multi-product checkout.
 
 ## Development
 
