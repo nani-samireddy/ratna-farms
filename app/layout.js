@@ -23,8 +23,14 @@ export default function Layout({ children }) {
       <main id="main">{children}</main>
       <footer className="footer">
         <div className="section-inner">
+          <Link className="footer-brand" href="/" aria-label="Ratna Farms home">
+            <svg viewBox="0 0 1120 174" aria-hidden="true" focusable="false">
+              <text x="0" y="141" textLength="1030" lengthAdjust="spacingAndGlyphs">Ratna Farms</text>
+              <circle className="footer-brand-dot" cx="1084" cy="126" r="16" />
+            </svg>
+          </Link>
           <div className="footer-main">
-            <div><Link className="footer-brand" href="/">Ratna Farms.</Link><p>R. Chandrampalem, East Godavari, Andhra Pradesh</p></div>
+            <p>R. Chandrampalem, East Godavari, Andhra Pradesh</p>
             <a className="pill light" href="tel:+919493981264">Call the farm ↗</a>
           </div>
           <div className="footer-base"><span>Country chicken &amp; eggs</span><a href="/credits.html">Photo credits</a></div>

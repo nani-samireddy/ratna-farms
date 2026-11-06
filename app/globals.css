@@ -89,10 +89,23 @@ form { display: grid; gap: 8px; padding: clamp(18px, 3vw, 34px); background: var
 label { font-weight: 550; font-size: .83rem; }
 select, input { font: inherit; color: var(--ink); background: white; border: 1px solid #19181722; border-radius: 13px; padding: 12px; width: 100%; margin-bottom: 6px; }
 form .pill { margin-top: 5px; }
-.footer { background: var(--ink); color: white; padding: 40px 0 18px; }
+.footer { background: var(--ink); color: white; padding: clamp(28px, 5vw, 62px) 0 18px; }
 .footer-main, .footer-base { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; }
-.footer-brand { font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 500; line-height: 1; letter-spacing: -.045em; text-decoration: none; }
-.footer-main p { margin-top: 7px; font-size: .87rem; }
+.footer-brand { display: block; margin-bottom: clamp(18px, 3vw, 34px); }
+.footer-brand svg { display: block; width: 100%; height: auto; overflow: visible; fill: currentColor; }
+.footer-brand text { font: 500 174px Outfit, system-ui, sans-serif; letter-spacing: -.04em; }
+.footer-brand-dot { fill: var(--lilac); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .footer-brand:hover .footer-brand-dot,
+  .footer-brand:focus-visible .footer-brand-dot { animation: footer-dot-hop 600ms ease-in-out; }
+}
+
+@keyframes footer-dot-hop {
+  45% { transform: translateY(-19px); }
+}
+
+.footer-main p { font-size: .87rem; }
 .footer-base { margin-top: 36px; border-top: 1px solid #ffffff38; padding-top: 14px; font-size: .72rem; }
 .credits { max-width: 760px; padding-block: 42px; }
 .credits h1 { font-size: 3rem; margin-block: 20px; }
