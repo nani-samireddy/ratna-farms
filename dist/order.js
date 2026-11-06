@@ -14,12 +14,11 @@ function updateExample() {
 }
 
 product.addEventListener("change", updateExample);
-document.querySelectorAll("[data-product]").forEach((link) => {
-  link.addEventListener("click", () => {
-    product.value = link.dataset.product;
-    updateExample();
-  });
-});
+const requestedProduct = new URLSearchParams(window.location.search).get("product");
+if (Object.hasOwn(examples, requestedProduct)) {
+  product.value = requestedProduct;
+}
+updateExample();
 
 for (const field of [amount, area]) {
   field.addEventListener("input", () => {
@@ -42,3 +41,27 @@ form.addEventListener("submit", (event) => {
   destination.searchParams.set("text", message);
   window.location.assign(destination.href);
 });
+
+const search = document.querySelector("#catalogue-search");
+const status = document.querySelector("#catalogue-status");
+const cards = document.querySelectorAll("[data-search]");
+
+function filterProducts() {
+  const terms = search.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  let count = 0;
+
+  for (const card of cards) {
+    const text = card.dataset.search.toLowerCase();
+    card.hidden = !terms.every((term) => text.includes(term));
+    if (!card.hidden) count += 1;
+  }
+
+  status.textContent = !terms.length ? "" : count
+    ? `${count} ${count === 1 ? "product" : "products"} found`
+    : "No products found. Try another search.";
+}
+
+search.closest('[role="search"]').hidden = false;
+search.addEventListener("input", filterProducts);
+window.addEventListener("pageshow", filterProducts);
+filterProducts();

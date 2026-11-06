@@ -7,8 +7,8 @@
   <meta name="theme-color" content="#faf9f5">
   <title>Ratna Farms | Country chicken & eggs</title>
   <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=outfit">
-  <script src="order.js" defer></script>
+  <link rel="stylesheet" href="styles.css?v=product-pages">
+  <script src="order.js?v=product-pages" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -49,25 +49,30 @@
         <p class="tag">Our produce</p>
         <h2 id="shop-title">Meet the flock.</h2>
         <p class="intro">Choose what you’d like and ask us about current availability.</p>
-        <div class="products">
-          <article class="feature">
+        <div class="catalogue-search" role="search" aria-label="Search our produce" hidden>
+          <label for="catalogue-search">Search our produce</label>
+          <input id="catalogue-search" type="search" placeholder="Try Natu Kodi, Aseel or eggs" aria-controls="catalogue-products">
+          <p id="catalogue-status" role="status"></p>
+        </div>
+        <div class="products" id="catalogue-products">
+          <article class="feature" data-search="Natu Kodi నాటు కోడి The local favourite country chicken whole bird">
             <img src="assets/country-hen.32601c1c8db5d420.webp" alt="Country hen with mottled black and brown feathers" loading="lazy">
             <div class="feature-body">
-              <div><p class="tag">The local favourite</p><h3>Natu Kodi</h3><p lang="te">నాటు కోడి</p></div>
-              <div><p>Order a whole bird or choose a quantity by weight. By-weight orders are ₹600 per kg.</p><a class="pill light" href="#order" data-product="Natu Kodi">Order Natu Kodi <span aria-hidden="true">↗</span></a></div>
+              <div><p class="tag">The local favourite</p><h3><a href="products/natu-kodi/">Natu Kodi</a></h3><p lang="te">నాటు కోడి</p></div>
+              <div><p>Order a whole bird or choose a quantity by weight. By-weight orders are ₹600 per kg.</p><a class="pill light" href="products/natu-kodi/">View Natu Kodi <span aria-hidden="true">↗</span></a></div>
             </div>
           </article>
-          <article class="product peach">
+          <article class="product peach" data-search="Aseel అసీల్ Native Indian breed native chicken asil asel">
             <img src="assets/aseel-rooster.732a97a37728a21b.webp" alt="Aseel rooster" loading="lazy">
-            <div><p class="kicker">Native Indian breed</p><h3>Aseel</h3><p>Ask about available birds and preparation options.</p><a class="text-link" href="#order" data-product="Aseel">Ask about Aseel ↗</a></div>
+            <div><p class="kicker">Native Indian breed</p><h3><a href="products/aseel/">Aseel</a></h3><p>Ask about available birds and preparation options.</p><a class="text-link" href="products/aseel/">View Aseel <span aria-hidden="true">↗</span></a></div>
           </article>
-          <article class="product blue">
+          <article class="product blue" data-search="Kadaknath కడక్‌నాథ్ Distinctive dark plumage native chicken black chicken">
             <img src="assets/kadaknath-pair.34471222c4ca95ea.webp" alt="Pair of dark-feathered Kadaknath chickens" loading="lazy">
-            <div><p class="kicker">Distinctive dark plumage</p><h3>Kadaknath</h3><p>Check with us for availability and pricing.</p><a class="text-link" href="#order" data-product="Kadaknath">Ask about Kadaknath ↗</a></div>
+            <div><p class="kicker">Distinctive dark plumage</p><h3><a href="products/kadaknath/">Kadaknath</a></h3><p>Check with us for availability and pricing.</p><a class="text-link" href="products/kadaknath/">View Kadaknath <span aria-hidden="true">↗</span></a></div>
           </article>
-          <article class="product cream">
+          <article class="product cream" data-search="Natu Kodi Eggs నాటు కోడి గుడ్లు Everyday essentials country eggs egg pack">
             <img src="assets/eggs-carton.efa06c6cc69d768a.webp" alt="Country eggs in a carton" loading="lazy">
-            <div><p class="kicker">Everyday essentials</p><h3>Natu Kodi Eggs</h3><p>Choose a pack size and we’ll confirm the price.</p><a class="text-link" href="#order" data-product="Natu Kodi Eggs">Ask about eggs ↗</a></div>
+            <div><p class="kicker">Everyday essentials</p><h3><a href="products/natu-kodi-eggs/">Natu Kodi Eggs</a></h3><p>Choose a pack size and we’ll confirm the price.</p><a class="text-link" href="products/natu-kodi-eggs/">View Natu Kodi Eggs <span aria-hidden="true">↗</span></a></div>
           </article>
         </div>
         <p class="photo-note">Product photos are illustrative. <a href="credits.html">Photo credits</a></p>

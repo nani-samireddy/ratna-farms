@@ -123,3 +123,24 @@ form .pill { margin-top: 5px; }
 @media (prefers-reduced-motion: reduce) {
   :root { scroll-behavior: auto; }
 }
+
+.catalogue-search { width: min(100%, 420px); margin: 24px auto 0; text-align: left; }
+.catalogue-search label { display: block; margin: 0 0 6px 3px; }
+.catalogue-search input { margin: 0; }
+.catalogue-search [role="status"]:not(:empty) { margin: 8px 0 0 3px; font-size: .88rem; }
+.products [hidden] { display: none; }
+.products h3 a { text-decoration: none; }
+.products h3 a:hover { text-decoration: underline; text-underline-offset: .12em; }
+.detail { padding-block: 12px clamp(45px, 7vw, 96px); }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(12px, 3vw, 36px); align-items: start; margin-top: 10px; }
+.detail-grid img { aspect-ratio: 1; border-radius: var(--radius); }
+.detail-copy { padding: clamp(22px, 4vw, 52px); border-radius: var(--radius); }
+.detail-copy h1 { font-size: clamp(2.65rem, 6vw, 5.4rem); margin-top: 10px; }
+.detail-telugu { margin: 6px 0 18px; }
+.detail-order { margin-top: 24px; padding-top: 20px; border-top: 1px solid #19181728; }
+.detail-order > p + p { margin-top: 5px; }
+.detail-order .pill { margin-top: 18px; }
+@media (max-width: 680px) {
+  .detail-grid { grid-template-columns: 1fr; }
+  .detail-grid img { aspect-ratio: 1.3; }
+}
