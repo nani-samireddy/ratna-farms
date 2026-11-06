@@ -1,14 +1,20 @@
 # Ratna Farms
 
-An alternate storefront for the Ratna Country Chicken business in R. Chandrampalem. The site uses plain HTML, CSS and JavaScript. The order form prepares a WhatsApp enquiry so the farm can confirm availability, pricing and delivery.
+Next.js App Router storefront for country chicken and eggs in R. Chandrampalem. The shop supports search, product variants, a browser-local cart and WhatsApp checkout.
 
-## Preview
+## Development
 
-Run `python3 -m http.server 8092 --directory dist` from the repository root and open [localhost:8092](http://localhost:8092).
+Use Node.js 24. Run `npm ci` and `npm run dev` and open [localhost:3000](http://localhost:3000). Run `npm run build` to export the storefront to `out/`.
+
+## Catalogue and FMS
+
+The storefront uses sample data from `lib/sample-products.json`. The server-side catalogue functions in `lib/catalogue.js` are the integration point for FMS on Frappe. Map FMS records into the current product shape, including a stable slug, photos and order options with stable IDs, units and optional prices. Cart storage contains option IDs and quantities, and the cart resolves current prices from the catalogue.
+
+The current deployment renders the catalogue at build time. When connecting FMS, keep credentials in the build or server environment. Use a rebuild to refresh a static deployment, or switch to a Next.js server deployment if the catalogue needs runtime updates.
 
 ## Home server
 
-Run `docker compose up -d --build --wait` from the repository root. The default port is 8092. Set `RATNA_BIND` to the server's LAN address to limit the listener to that interface. Set `RATNA_PORT` if a different port is needed.
+Run `docker compose up -d --build --wait` from the repository root. Docker builds the Next.js export and serves it with Nginx. Set `RATNA_BIND` to the server's LAN address to limit the listener to that interface. The default port is 8092 and can be changed with `RATNA_PORT`.
 
 ## Images
 

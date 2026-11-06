@@ -1,0 +1,119 @@
+[
+  {
+    "slug": "natu-kodi",
+    "name": "Natu Kodi",
+    "telugu": "నాటు కోడి",
+    "group": "Chicken",
+    "description": "Country chicken for your family table. Choose a whole bird or order the quantity you need by weight. Confirm the available variety with us before ordering.",
+    "detail": "By-weight orders use the listed rate per kg. For live birds, the final price may increase or decrease based on actual weight, which varies from bird to bird. Preparation and delivery charges are confirmed separately.",
+    "photos": [
+      {
+        "src": "/assets/country-hen.32601c1c8db5d420.webp",
+        "alt": "Country hen with mottled black and brown feathers"
+      }
+    ],
+    "options": [
+      {
+        "id": "weight",
+        "name": "By weight",
+        "unit": "kg",
+        "step": 0.5,
+        "price": 600
+      },
+      {
+        "id": "whole",
+        "name": "Whole bird",
+        "unit": "birds",
+        "step": 1
+      }
+    ],
+    "keywords": "country chicken whole bird"
+  },
+  {
+    "slug": "aseel",
+    "name": "Aseel",
+    "telugu": "అసీల్",
+    "group": "Chicken",
+    "description": "Aseel is a recognised native Indian chicken breed, with Andhra Pradesh among its home regions. Ask us about available birds and preparation options.",
+    "detail": "Availability and prices are confirmed on WhatsApp.",
+    "photos": [
+      {
+        "src": "/assets/aseel-rooster.732a97a37728a21b.webp",
+        "alt": "Aseel rooster"
+      },
+      {
+        "src": "/assets/aseel-bird.5f2e8f01421bddc3.webp",
+        "alt": "Alternate illustrative photo of Aseel"
+      }
+    ],
+    "options": [
+      {
+        "id": "whole",
+        "name": "Whole bird",
+        "unit": "birds",
+        "step": 1
+      }
+    ],
+    "keywords": "native chicken asil asel"
+  },
+  {
+    "slug": "kadaknath",
+    "name": "Kadaknath",
+    "telugu": "కడక్‌నాథ్",
+    "group": "Chicken",
+    "description": "Kadaknath is a native Indian chicken breed associated with Madhya Pradesh, known for its dark pigmentation. Check with us about availability.",
+    "detail": "Availability and prices are confirmed on WhatsApp.",
+    "photos": [
+      {
+        "src": "/assets/kadaknath-pair.34471222c4ca95ea.webp",
+        "alt": "Pair of dark-feathered Kadaknath chickens"
+      },
+      {
+        "src": "/assets/kadaknath-rooster.b5fbd4a12e1014b1.webp",
+        "alt": "Alternate illustrative photo of Kadaknath"
+      }
+    ],
+    "options": [
+      {
+        "id": "whole",
+        "name": "Whole bird",
+        "unit": "birds",
+        "step": 1
+      }
+    ],
+    "keywords": "native chicken black chicken"
+  },
+  {
+    "slug": "natu-kodi-eggs",
+    "name": "Natu Kodi Eggs",
+    "telugu": "నాటు కోడి గుడ్లు",
+    "group": "Eggs",
+    "description": "Country chicken eggs for breakfast, everyday cooking, and family favourites. Select a pack size and we’ll confirm availability and price.",
+    "detail": "Egg size and shell colour can vary. Pack prices and available quantity are confirmed on WhatsApp.",
+    "photos": [
+      {
+        "src": "/assets/eggs-carton.efa06c6cc69d768a.webp",
+        "alt": "Country eggs in a carton"
+      },
+      {
+        "src": "/assets/eggs-tray.5dd8b0f03382f300.webp",
+        "alt": "Alternate illustrative photo of Natu Kodi Eggs"
+      }
+    ],
+    "options": [
+      {
+        "id": "six",
+        "name": "Pack of 6",
+        "unit": "packs",
+        "step": 1
+      },
+      {
+        "id": "twelve",
+        "name": "Pack of 12",
+        "unit": "packs",
+        "step": 1
+      }
+    ],
+    "keywords": "country eggs egg pack"
+  }
+]
