@@ -1,0 +1,12 @@
+name: ratna-farms
+services:
+  website:
+    build: .
+    ports:
+      - "${RATNA_BIND:-0.0.0.0}:${RATNA_PORT:-8092}:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
