@@ -10,7 +10,7 @@ export default async function HomePage() {
       <Image className="hero-image" src="/assets/farm-hero.jpg" alt="" preload fill />
       <div className="hero-copy">
         <p className="kicker">R. Chandrampalem · East Godavari</p>
-        <h1 id="hero-title">From our farm<br />to your table.</h1>
+        <h1 id="hero-title">From our farm<br /><em>to your table.</em></h1>
         <p>Country chicken and eggs for everyday meals<br className="desktop" /> and the ones you gather around.</p>
         <Link className="pill light" href="/shop/">Shop our produce ↗</Link>
       </div>
